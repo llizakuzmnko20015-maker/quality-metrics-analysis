@@ -1,0 +1,317 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace QualityMetricsDemo
+{
+    /// <summary>
+    /// Модуль калькулятора с намеренными ошибками для демонстрации
+    /// работы анализаторов качества кода
+    /// </summary>
+    public class CalculatorWithErrors
+    {
+        // ОШИБКА 1: Публичное поле (нарушение инкапсуляции)
+        public string LastOperation = "";
+
+        // ОШИБКА 2: Неинициализированная коллекция (возможет NullReferenceException)
+        private List<double> _history;
+
+        private double _lastResult;
+
+        // ОШИБКА 3: Конструктор не инициализирует _history
+
+        // === Базовые операции ===
+
+        public double Add(double a, double b)
+        {
+            // ОШИБКА 4: Нет проверки на переполнение
+            double result = a + b;
+            _lastResult = result;
+            // ОШИБКА 5: NullReferenceException (history не инициализирован)
+            _history.Add(result);
+            return result;
+        }
+
+        public double Subtract(double a, double b)
+        {
+            double result = a - b;
+            _lastResult = result;
+            _history.Add(result);
+            return result;
+        }
+
+        public double Multiply(double a, double b)
+        {
+            double result = a * b;
+            _lastResult = result;
+            _history.Add(result);
+            return result;
+        }
+
+        // ОШИБКА 6: Деление на ноль не обрабатывается
+        public double Divide(double a, double b)
+        {
+            double result = a / b;
+            _lastResult = result;
+            _history.Add(result);
+            return result;
+        }
+
+        // ОШИБКА 7: Неиспользуемый параметр
+        public double Power(double baseNum, double exponent, bool useLog)
+        {
+            double result = Math.Pow(baseNum, exponent);
+            _lastResult = result;
+            _history.Add(result);
+            return result;
+        }
+
+        // ОШИБКА 8: Метод с высокой цикломатической сложностью
+        public string GetGrade(double score)
+        {
+            // ОШИБКА 9: Нет проверки на выход за границы (score может быть >100 или <0)
+            if (score >= 90)
+                return "Отлично";
+            if (score >= 75)
+                return "Хорошо";
+            if (score >= 50)
+                return "Удовлетворительно";
+            if (score >= 25)
+                return "Плохо";
+            if (score >= 10)
+                return "Очень плохо";
+            // ОШИБКА 10: Нет обработки случая score < 10 (вернется null)
+            return null;
+        }
+
+        // ОШИБКА 11: Глубокая вложенность (цикломатическая сложность)
+        public double CalculateDiscount(double price, int customerLevel, bool isHoliday, bool isWeekend, bool isMember)
+        {
+            double discount = 0;
+
+            if (customerLevel >= 5)
+            {
+                if (isHoliday)
+                {
+                    if (isMember)
+                    {
+                        discount = 0.35;
+                    }
+                    else
+                    {
+                        discount = 0.30;
+                    }
+                }
+                else
+                {
+                    if (isWeekend)
+                    {
+                        if (isMember)
+                        {
+                            discount = 0.25;
+                        }
+                        else
+                        {
+                            discount = 0.20;
+                        }
+                    }
+                    else
+                    {
+                        discount = 0.15;
+                    }
+                }
+            }
+            else
+            {
+                if (isHoliday)
+                {
+                    if (isMember)
+                    {
+                        discount = 0.15;
+                    }
+                    else
+                    {
+                        discount = 0.10;
+                    }
+                }
+                else
+                {
+                    discount = 0.05;
+                }
+            }
+
+            // ОШИБКА 12: Нет проверки, что discount не превышает 100%
+            return price * discount;
+        }
+
+        // ОШИБКА 13: Метод с пустым catch
+        public double SafeDivide(double a, double b)
+        {
+            try
+            {
+                return a / b;
+            }
+            catch
+            {
+                // ОШИБКА 14: Пустой блок catch - подавление исключений
+                // ОШИБКА 15: Не возвращается значение в случае ошибки
+            }
+            // ОШИБКА 16: Компилятор выдаст предупреждение о недостижимом коде
+            return 0;
+        }
+
+        // ОШИБКА 17: Имя метода не соответствует рекомендациям (должно быть с большой буквы)
+        public void calculateAverage(List<double> numbers)
+        {
+            // ОШИБКА 18: Нет проверки на null
+            // ОШИБКА 19: Нет проверки на пустой список
+            double sum = 0;
+            foreach (var num in numbers)
+                sum += num;
+            // ОШИБКА 20: Переменная не используется
+            double avg = sum / numbers.Count;
+            // ОШИБКА 21: Не сохраняется результат
+        }
+
+        // ОШИБКА 22: Дублирование кода (почти идентично методу CalculateDiscount)
+        public double GetFinalPrice(double basePrice, int level, bool holiday, bool weekend, bool member)
+        {
+            double discount = 0;
+
+            if (level >= 5)
+            {
+                if (holiday)
+                {
+                    if (member)
+                    {
+                        discount = 0.35;
+                    }
+                    else
+                    {
+                        discount = 0.30;
+                    }
+                }
+                else
+                {
+                    if (weekend)
+                    {
+                        if (member)
+                        {
+                            discount = 0.25;
+                        }
+                        else
+                        {
+                            discount = 0.20;
+                        }
+                    }
+                    else
+                    {
+                        discount = 0.15;
+                    }
+                }
+            }
+            else
+            {
+                if (holiday)
+                {
+                    if (member)
+                    {
+                        discount = 0.15;
+                    }
+                    else
+                    {
+                        discount = 0.10;
+                    }
+                }
+                else
+                {
+                    discount = 0.05;
+                }
+            }
+
+            return basePrice * discount;
+        }
+
+        // ОШИБКА 23: Неиспользуемый метод
+        private void UnusedMethod()
+        {
+            Console.WriteLine("Этот метод никогда не вызывается");
+        }
+
+        // ОШИБКА 24: Использование магических чисел
+        public bool IsValidAge(int age)
+        {
+            return age >= 18 && age <= 65;
+            // Должно быть: const int MIN_AGE = 18; const int MAX_AGE = 65;
+        }
+
+        // ОШИБКА 25: Метод слишком длинный (более 20 строк)
+        public void ProcessOrders(List<Order> orders)
+        {
+            // Большой метод с множеством ответственностей
+            double total = 0;
+            int count = 0;
+            foreach (var order in orders)
+            {
+                if (order.IsValid)
+                {
+                    total += order.Amount;
+                    count++;
+                    Console.WriteLine($"Обработан заказ #{order.Id}");
+                    // ... много логики ...
+                    // ... еще логика ...
+                    // ... и еще ...
+                }
+            }
+            // ОШИБКА 26: Неиспользуемые переменные
+            double average = total / count;
+            string status = "Completed";
+            // ОШИБКА 27: Несохранение результатов
+        }
+
+        // ОШИБКА 28: Уязвимость - потенциальная SQL-инъекция
+        public void GetUser(string userId)
+        {
+            // В реальном коде здесь должен быть параметризованный запрос
+            string query = $"SELECT * FROM Users WHERE Id = '{userId}'";
+            // Это опасно!
+        }
+
+        // ОШИБКА 29: Неасинхронный метод, но с Async в имени
+        public async void GetDataAsync()
+        {
+            // async void опасен для использования - ошибки не обрабатываются
+            // и сложно отследить завершение
+        }
+
+        // ОШИБКА 30: Проверка на null через ReferenceEquals (неправильно)
+        public bool IsNull(object obj)
+        {
+            return ReferenceEquals(obj, null);
+            // Лучше: return obj == null;
+        }
+    }
+
+    // ОШИБКА 31: Класс не следует рекомендациям по именованию (должен быть Order)
+    public class order
+    {
+        public int Id { get; set; }
+        public double Amount { get; set; }
+        public bool IsValid { get; set; }
+    }
+
+    // ОШИБКА 32: Интерфейс без префикса I
+    public interface Calculable
+    {
+        double Compute();
+    }
+
+    // ОШИБКА 33: Реализация интерфейса без префикса
+    public class MathOperation : Calculable
+    {
+        public double Compute()
+        {
+            return 42;
+        }
+    }
+}
